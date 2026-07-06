@@ -7,13 +7,15 @@ export function TrackFit() {
         <div className="flex flex-wrap gap-2">
           <Badge tone="blue">World Cup football</Badge>
           <Badge tone="orange">TxLINE live</Badge>
+          <Badge tone="light">5s refresh</Badge>
+          <Badge tone="light">Stat Hi-Lo</Badge>
           <Badge tone="green">No wallet</Badge>
           <Badge tone="light">Watch party ready</Badge>
         </div>
         <p className="mt-4 max-w-3xl text-sm font-semibold leading-7 text-[#395047]">
           FanPulse turns football match data into live momentum, free Fan
-          Quests, Auto Pundit moments, group sweepstakes, and a recap fans can
-          share with friends.
+          Quests, odds-derived Auto Pundit moments, TxLINE stat Hi-Lo, group
+          sweepstakes, and a recap fans can share with friends.
         </p>
         <p className="mt-3 max-w-3xl text-sm font-semibold leading-7 text-[#5d7167]">
           The product path is a creator and watch-party companion: clubs,

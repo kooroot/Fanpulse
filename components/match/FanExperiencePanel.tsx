@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Check, Copy, Mic2, Users, Volume2 } from "lucide-react";
+import { BarChart3, Check, Copy, Mic2, Users, Volume2 } from "lucide-react";
 import { Badge } from "@/components/common/Badge";
 import {
-  buildPressureIndex,
+  buildHiLoStatReading,
   buildPunditMoments,
   buildSweepstakeBoard,
   createHiLoChallenge,
+  formatHiLoValue,
   resolveHiLoChallenge,
   scoreHiLoPick,
 } from "@/lib/experience/fan-experience-engine";
@@ -32,11 +33,12 @@ export function FanExperiencePanel(props: FanExperiencePanelProps) {
   const input = props;
   const [state, setState] = useState<HiLoLocalState>(EMPTY_STATE);
   const [copied, setCopied] = useState(false);
-  const pressure = buildPressureIndex(input);
+  const statReading = buildHiLoStatReading(input);
   const punditMoments = useMemo(() => buildPunditMoments(input), [input]);
   const sweepstake = useMemo(() => buildSweepstakeBoard(input), [input]);
   const activeChallenge =
-    state.challenge?.fixtureId === input.fixture.fixtureId
+    state.challenge?.fixtureId === input.fixture.fixtureId &&
+    state.challenge.statKey === statReading.key
       ? state.challenge
       : createHiLoChallenge(input);
 
@@ -59,12 +61,13 @@ export function FanExperiencePanel(props: FanExperiencePanelProps) {
     ) {
       return;
     }
+    if (challenge.statKey !== statReading.key) return;
 
     const oldEnough = Date.now() - challenge.createdAt >= 6000;
-    const changed = pressure !== challenge.baseline;
+    const changed = statReading.value !== challenge.baseline;
     if (!oldEnough && !changed) return;
 
-    const resolved = resolveHiLoChallenge(challenge, pressure);
+    const resolved = resolveHiLoChallenge(challenge, statReading.value);
     const result = scoreHiLoPick(resolved);
     window.queueMicrotask(() => {
       setState((current) => ({
@@ -73,7 +76,7 @@ export function FanExperiencePanel(props: FanExperiencePanelProps) {
         challenge: resolved,
       }));
     });
-  }, [pressure, state.challenge]);
+  }, [statReading.key, statReading.value, state.challenge]);
 
   function selectPick(pick: HiLoPick) {
     const challenge =
@@ -87,8 +90,8 @@ export function FanExperiencePanel(props: FanExperiencePanelProps) {
         selectedOption: pick,
         status: "OPEN",
         createdAt: Date.now(),
-        baseline: pressure,
-        current: pressure,
+        baseline: statReading.value,
+        current: statReading.value,
         resolvedOption: undefined,
         resolvedAt: undefined,
       },
@@ -125,7 +128,7 @@ export function FanExperiencePanel(props: FanExperiencePanelProps) {
 
   return (
     <section className="space-y-3">
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <p className="text-xs font-black uppercase tracking-normal text-[#789085]">
             FanPulse Live Lab
@@ -134,13 +137,19 @@ export function FanExperiencePanel(props: FanExperiencePanelProps) {
             Auto Pundit & Fan Games
           </h2>
         </div>
-        <Badge tone={props.mode === "live" ? "blue" : "green"}>
-          {props.mode === "live" ? "TxLINE live" : "Fallback"}
-        </Badge>
+        <div className="flex flex-wrap gap-2 sm:justify-end">
+          <Badge tone={props.mode === "live" ? "blue" : "green"}>
+            {props.mode === "live" ? "TxLINE live" : "Fallback"}
+          </Badge>
+          <Badge tone="light">
+            {props.mode === "live" ? "5s refresh" : "Replayable"}
+          </Badge>
+          <Badge tone="light">TxLINE stats</Badge>
+        </div>
       </div>
 
-      <div className="grid gap-3">
-        <article className="rounded-lg border border-[#dce8d8] bg-white p-4 shadow-sm">
+      <div className="grid gap-3 xl:grid-cols-2">
+        <article className="rounded-lg border border-[#dce8d8] bg-white p-4 shadow-sm xl:col-span-2">
           <div className="mb-3 flex items-center justify-between gap-3">
             <div className="flex min-w-0 items-center gap-2">
               <Mic2 aria-hidden="true" className="h-5 w-5 text-[#3157d5]" />
@@ -183,6 +192,13 @@ export function FanExperiencePanel(props: FanExperiencePanelProps) {
                   </p>
                   <ToneBadge tone={moment.tone} />
                 </div>
+                <p className="mt-1 text-[11px] font-black uppercase tracking-normal text-[#789085]">
+                  {moment.source === "odds"
+                    ? "Odds-derived market mood"
+                    : moment.source === "pulse-card"
+                      ? "Pulse Card"
+                      : "Momentum Meter"}
+                </p>
                 <p className="mt-1 text-sm leading-6 text-[#52685d]">
                   {moment.body}
                 </p>
@@ -193,10 +209,16 @@ export function FanExperiencePanel(props: FanExperiencePanelProps) {
 
         <article className="rounded-lg border border-[#dce8d8] bg-white p-4 shadow-sm">
           <div className="flex items-start justify-between gap-3">
-            <div>
-              <h3 className="text-base font-black text-[#10261c]">
-                Hi-Lo Stats
-              </h3>
+            <div className="min-w-0">
+              <div className="flex items-center gap-2">
+                <BarChart3 aria-hidden="true" className="h-5 w-5 text-[#ff7a45]" />
+                <h3 className="text-base font-black text-[#10261c]">
+                  Hi-Lo Stats
+                </h3>
+              </div>
+              <p className="mt-2 text-xs font-black uppercase tracking-normal text-[#789085]">
+                {activeChallenge.sourceLabel}
+              </p>
               <p className="mt-1 text-sm font-semibold text-[#5d7167]">
                 {activeChallenge.question}
               </p>
@@ -229,10 +251,14 @@ export function FanExperiencePanel(props: FanExperiencePanelProps) {
           </div>
           <div className="mt-3 flex items-center justify-between gap-3 text-xs font-bold text-[#789085]">
             <span>
-              Pressure {activeChallenge.baseline} to {pressure}
+              {activeChallenge.label} {formatHiLoValue(activeChallenge.baseline)} to{" "}
+              {formatHiLoValue(statReading.value)}
             </span>
             <span>Streak {state.streak}</span>
           </div>
+          <p className="mt-1 text-xs font-semibold text-[#789085]">
+            Current stat count: {statReading.rawCount}
+          </p>
           {activeChallenge.status === "RESOLVED" ? (
             <button
               type="button"

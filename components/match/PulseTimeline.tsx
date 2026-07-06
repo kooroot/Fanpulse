@@ -18,7 +18,7 @@ export function PulseTimeline({ cards }: PulseTimelineProps) {
   return (
     <section className="space-y-3">
       <h2 className="text-lg font-black text-[#10261c]">Pulse Timeline</h2>
-      <div className="space-y-3">
+      <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
         {cards.map((card) => (
           <PulseCard key={card.id} card={card} />
         ))}

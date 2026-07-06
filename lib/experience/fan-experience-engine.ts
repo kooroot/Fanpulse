@@ -3,19 +3,26 @@ import type {
   FanExperienceInput,
   HiLoChallenge,
   HiLoPick,
+  HiLoStatReading,
   PunditMoment,
   PunditMomentTone,
   SweepstakePlayer,
 } from "@/lib/experience/types";
+import type { NormalizedOddsUpdate } from "@/lib/txline/types";
 
 const HI_LO_OPTIONS: HiLoPick[] = ["Higher", "Lower", "Same"];
 const SWEEPSTAKE_NAMES = ["Mina", "Jae", "Alex", "Sam"] as const;
+const HI_LO_SAME_THRESHOLD = 2;
 
 export function buildPunditMoments(input: FanExperienceInput): PunditMoment[] {
-  const moments = input.pulseCards
+  const pulseMoments = input.pulseCards
     .slice(-5)
     .reverse()
     .map((card) => punditFromPulseCard(input, card));
+  const marketMood = buildMarketMoodMoment(input);
+  const moments = marketMood
+    ? [marketMood, ...pulseMoments].slice(0, 5)
+    : pulseMoments;
 
   if (moments.length > 0) return moments;
 
@@ -58,21 +65,72 @@ export function buildPressureIndex(input: FanExperienceInput): number {
   );
 }
 
+export function buildHiLoStatReading(input: FanExperienceInput): HiLoStatReading {
+  const stats = input.score?.stats ?? {};
+  const minute = Math.max(1, input.score?.minute ?? 1);
+  const corners = stat(stats, 7) + stat(stats, 8);
+  const discipline =
+    stat(stats, 3) + stat(stats, 4) + stat(stats, 5) * 2 + stat(stats, 6) * 2;
+  const statGoals = stat(stats, 1) + stat(stats, 2);
+  const scoreGoals =
+    (input.score?.participant1Score ?? 0) + (input.score?.participant2Score ?? 0);
+  const goals = statGoals || scoreGoals;
+
+  if (corners > 0 || hasAnyStat(stats, [7, 8])) {
+    return paceReading({
+      key: "corners",
+      label: "Corner pace",
+      sourceLabel: "TxLINE stat keys 7+8",
+      statKeys: [7, 8],
+      rawCount: corners,
+      minute,
+    });
+  }
+
+  if (discipline > 0 || hasAnyStat(stats, [3, 4, 5, 6])) {
+    return paceReading({
+      key: "discipline",
+      label: "Card heat",
+      sourceLabel: "TxLINE stat keys 3-6",
+      statKeys: [3, 4, 5, 6],
+      rawCount: discipline,
+      minute,
+    });
+  }
+
+  return paceReading({
+    key: "goals",
+    label: "Goal pace",
+    sourceLabel: "TxLINE score feed + stat keys 1+2",
+    statKeys: [1, 2],
+    rawCount: goals,
+    minute,
+  });
+}
+
+export function formatHiLoValue(value: number): string {
+  return `${(value / 10).toFixed(1)}/15m`;
+}
+
 export function createHiLoChallenge(
   input: FanExperienceInput,
   createdAt = Date.now(),
 ): HiLoChallenge {
-  const pressure = buildPressureIndex(input);
+  const reading = buildHiLoStatReading(input);
   const minute = input.score?.minute;
   const minuteText = minute === undefined ? "live refresh" : `${minute}'`;
 
   return {
-    id: `${input.fixture.fixtureId}-pressure-${input.pulseCards.length}-${input.pulseMeter.ts}-${pressure}`,
+    id: `${input.fixture.fixtureId}-${reading.key}-${input.pulseCards.length}-${input.pulseMeter.ts}-${reading.value}`,
     fixtureId: input.fixture.fixtureId,
-    label: "Pressure Index",
-    baseline: pressure,
-    current: pressure,
-    question: `Next ${minuteText}: does pressure go higher, lower, or stay close?`,
+    statKey: reading.key,
+    label: reading.label,
+    sourceLabel: reading.sourceLabel,
+    statKeys: reading.statKeys,
+    unit: reading.unit,
+    baseline: reading.value,
+    current: reading.value,
+    question: `Next TxLINE stat update after ${minuteText}: higher, lower, or same pace?`,
     options: HI_LO_OPTIONS,
     status: "OPEN",
     xpReward: 15,
@@ -82,16 +140,20 @@ export function createHiLoChallenge(
 
 export function resolveHiLoChallenge(
   challenge: HiLoChallenge,
-  currentPressure: number,
+  currentValue: number,
   resolvedAt = Date.now(),
 ): HiLoChallenge {
-  const delta = currentPressure - challenge.baseline;
+  const delta = currentValue - challenge.baseline;
   const resolvedOption: HiLoPick =
-    Math.abs(delta) <= 3 ? "Same" : delta > 0 ? "Higher" : "Lower";
+    Math.abs(delta) <= HI_LO_SAME_THRESHOLD
+      ? "Same"
+      : delta > 0
+        ? "Higher"
+        : "Lower";
 
   return {
     ...challenge,
-    current: currentPressure,
+    current: currentValue,
     resolvedOption,
     status: "RESOLVED",
     resolvedAt,
@@ -154,6 +216,72 @@ export function buildSweepstakeBoard(input: FanExperienceInput): SweepstakePlaye
     .sort((a, b) => b.points - a.points || a.name.localeCompare(b.name));
 }
 
+function buildMarketMoodMoment(input: FanExperienceInput): PunditMoment | undefined {
+  const odds = (input.odds ?? [])
+    .filter((update) => update.impliedProbability !== undefined)
+    .sort((a, b) => a.ts - b.ts || (a.seq ?? 0) - (b.seq ?? 0));
+  if (odds.length === 0) {
+    if (input.fixture.source !== "txline") return undefined;
+
+    return {
+      id: `pundit-market-waiting-${input.fixture.fixtureId}-${input.pulseMeter.ts}`,
+      fixtureId: input.fixture.fixtureId,
+      ts: input.pulseMeter.ts,
+      title: "Market mood waiting for odds",
+      body:
+        "TxLINE live scores are connected. FanPulse will add odds-derived market mood as soon as an odds snapshot arrives for this fixture.",
+      tone: "calm",
+      priority: 2,
+      source: "odds",
+      shareLine: `${input.fixture.participant1} vs ${input.fixture.participant2}: live scores are connected and market mood is waiting for odds.`,
+    };
+  }
+
+  const firstBySelection = new Map<string, NormalizedOddsUpdate>();
+  const latestBySelection = new Map<string, NormalizedOddsUpdate>();
+
+  for (const update of odds) {
+    if (!firstBySelection.has(update.selection)) {
+      firstBySelection.set(update.selection, update);
+    }
+    latestBySelection.set(update.selection, update);
+  }
+
+  const leader = [...latestBySelection.values()].sort(
+    (a, b) => (b.impliedProbability ?? 0) - (a.impliedProbability ?? 0),
+  )[0];
+  if (!leader) return undefined;
+
+  const baseline = firstBySelection.get(leader.selection);
+  const delta =
+    (leader.impliedProbability ?? 0) - (baseline?.impliedProbability ?? 0);
+  const team = selectionLabel(input, leader.selection);
+  const pct = Math.round((leader.impliedProbability ?? 0) * 100);
+  const deltaPct = Math.round(Math.abs(delta) * 100);
+  const isSwing = Math.abs(delta) >= 0.06;
+  const movement =
+    delta > 0.01 ? "stronger" : delta < -0.01 ? "softer" : "steady";
+  const title = isSwing
+    ? `Market mood swings toward ${team}`
+    : `Market mood leans ${team}`;
+  const body =
+    leader.selection === "DRAW"
+      ? `The odds-derived mood reads this as balanced at about ${pct}%. FanPulse turns that signal into watch-party context.`
+      : `The odds-derived mood now leans toward ${team} at about ${pct}%, with the latest read ${movement}${deltaPct > 0 ? ` by ${deltaPct} points` : ""}.`;
+
+  return {
+    id: `pundit-market-${input.fixture.fixtureId}-${leader.selection}-${leader.ts}`,
+    fixtureId: input.fixture.fixtureId,
+    ts: leader.ts,
+    title,
+    body,
+    tone: isSwing ? "swing" : "calm",
+    priority: isSwing ? 4 : 2,
+    source: "odds",
+    shareLine: `${input.fixture.participant1} vs ${input.fixture.participant2}: ${title}. ${body}`,
+  };
+}
+
 function punditFromPulseCard(
   input: FanExperienceInput,
   card: PulseCard,
@@ -197,4 +325,36 @@ function toneForCard(card: PulseCard): PunditMomentTone {
     return "pressure";
   }
   return "calm";
+}
+
+function selectionLabel(input: FanExperienceInput, selection: string): string {
+  if (selection === "P1") return input.fixture.participant1;
+  if (selection === "P2") return input.fixture.participant2;
+  if (selection === "DRAW") return "balanced";
+  return selection;
+}
+
+function stat(stats: Record<string, number>, key: number): number {
+  return Number(stats[String(key)] ?? 0);
+}
+
+function hasAnyStat(stats: Record<string, number>, keys: number[]): boolean {
+  return keys.some((key) =>
+    Object.prototype.hasOwnProperty.call(stats, String(key)),
+  );
+}
+
+function paceReading(args: {
+  key: HiLoStatReading["key"];
+  label: string;
+  sourceLabel: string;
+  statKeys: number[];
+  rawCount: number;
+  minute: number;
+}): HiLoStatReading {
+  return {
+    ...args,
+    value: Math.round((args.rawCount / args.minute) * 150),
+    unit: "per15",
+  };
 }

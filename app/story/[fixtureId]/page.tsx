@@ -28,8 +28,8 @@ export default async function StoryPage({ params }: StoryPageProps) {
 
   return (
     <div className="min-h-screen bg-[#f7faf5] pb-24">
-      <main className="mx-auto max-w-md space-y-4 px-4 py-6">
-        <div>
+      <main className="mx-auto max-w-6xl space-y-5 px-4 py-6 lg:px-8">
+        <div className="max-w-2xl">
           <h1 className="text-4xl font-black text-[#10261c]">
             {story?.title ?? "Match in 7 Pulses"}
           </h1>
@@ -40,8 +40,8 @@ export default async function StoryPage({ params }: StoryPageProps) {
         </div>
 
         {story && snapshot ? (
-          <>
-            <div className="space-y-3">
+          <div className="grid gap-5 lg:grid-cols-[minmax(0,1.35fr)_minmax(320px,0.85fr)] lg:items-start">
+            <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-1">
               {story.chapters.map((chapter, index) => (
                 <MatchStoryChapter
                   key={chapter.id}
@@ -51,14 +51,16 @@ export default async function StoryPage({ params }: StoryPageProps) {
               ))}
             </div>
 
-            <ShareCard
-              fixture={snapshot.fixture}
-              score={snapshot.score}
-              biggestPulse={biggestPulse?.title ?? "Final push"}
-              meter={snapshot.pulseMeter}
-              story={story}
-            />
-          </>
+            <aside className="space-y-4 lg:sticky lg:top-28">
+              <ShareCard
+                fixture={snapshot.fixture}
+                score={snapshot.score}
+                biggestPulse={biggestPulse?.title ?? "Final push"}
+                meter={snapshot.pulseMeter}
+                story={story}
+              />
+            </aside>
+          </div>
         ) : (
           <EmptyState title="Story waiting">
             This match does not have a final whistle yet, so FanPulse is keeping
@@ -66,7 +68,7 @@ export default async function StoryPage({ params }: StoryPageProps) {
           </EmptyState>
         )}
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid gap-3 sm:grid-cols-2 lg:max-w-xl">
           <Link
             href={`/match/${snapshot?.fixture.fixtureId ?? fixtureId}`}
             className="inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-[#dce8d8] bg-white px-4 text-sm font-black text-[#10261c] transition hover:bg-[#eef7ec]"

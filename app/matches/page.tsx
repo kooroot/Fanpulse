@@ -28,7 +28,7 @@ export default async function MatchesPage() {
 
   return (
     <div className="min-h-screen bg-[#f7faf5] pb-24">
-      <main className="mx-auto max-w-md space-y-5 px-4 py-6">
+      <main className="mx-auto max-w-6xl space-y-6 px-4 py-6 lg:px-8">
         <div>
           <div className="flex flex-wrap gap-2">
             <Badge tone={liveAvailable ? "blue" : "green"}>
@@ -38,16 +38,18 @@ export default async function MatchesPage() {
               {liveAvailable ? "TxLINE fixtures ready" : "Live data unavailable"}
             </Badge>
             <Badge tone="light">{liveSource}</Badge>
+            <Badge tone="light">5s match refresh</Badge>
           </div>
           <h1 className="mt-4 text-4xl font-black text-[#10261c]">
             Match Lobby
           </h1>
-          <p className="mt-3 text-sm font-semibold leading-6 text-[#52685d]">
-            Choose a real fixture and start the pulse. If TxLINE data is
-            unavailable, FanPulse keeps a local replay fallback for review.
+          <p className="mt-3 max-w-2xl text-sm font-semibold leading-6 text-[#52685d]">
+            Choose a real fixture and start the pulse. FanPulse reads TxLINE
+            scores, odds, and stat updates through server routes, with replay
+            fallback only when live data is unavailable.
           </p>
         </div>
-        <div className="space-y-3">
+        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
           {fixtures.map((fixture) => (
             <FixtureCard key={fixture.fixtureId} fixture={fixture} />
           ))}

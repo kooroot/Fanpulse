@@ -127,56 +127,63 @@ export function MobileMatchShell({ replay }: MobileMatchShellProps) {
   return (
     <div className="min-h-screen bg-[#f7faf5] pb-24">
       <ScoreHeader fixture={replay.fixture} score={snapshot.score} />
-      <main className="mx-auto max-w-md space-y-4 px-4 py-4">
-        <ReplayControls
-          state={replayState}
-          durationMs={replay.durationMs}
-          onStart={() => setReplayState((current) => startReplay(current))}
-          onPause={() => setReplayState((current) => pauseReplay(current))}
-          onReset={handleReset}
-          onSpeedChange={(speed) =>
-            setReplayState((current) => setReplaySpeed(current, speed))
-          }
-        />
+      <main className="mx-auto max-w-6xl space-y-5 px-4 py-4 lg:px-8">
+        <div className="grid gap-5 lg:grid-cols-[minmax(0,1.45fr)_minmax(320px,0.85fr)] lg:items-start">
+          <section className="space-y-4">
+            <ReplayControls
+              state={replayState}
+              durationMs={replay.durationMs}
+              onStart={() => setReplayState((current) => startReplay(current))}
+              onPause={() => setReplayState((current) => pauseReplay(current))}
+              onReset={handleReset}
+              onSpeedChange={(speed) =>
+                setReplayState((current) => setReplaySpeed(current, speed))
+              }
+            />
 
-        <PulseMeter fixture={replay.fixture} meter={snapshot.pulseMeter} />
+            <PulseMeter fixture={replay.fixture} meter={snapshot.pulseMeter} />
 
-        <FanExperiencePanel
-          fixture={replay.fixture}
-          score={snapshot.score}
-          pulseMeter={snapshot.pulseMeter}
-          pulseCards={snapshot.pulseCards}
-          mode="fallback"
-        />
+            <FanExperiencePanel
+              fixture={replay.fixture}
+              score={snapshot.score}
+              odds={snapshot.odds}
+              pulseMeter={snapshot.pulseMeter}
+              pulseCards={snapshot.pulseCards}
+              mode="fallback"
+            />
 
-        {latestPulse ? (
-          <section className="space-y-3">
-            <h2 className="text-lg font-black text-[#10261c]">
-              Latest Pulse Card
-            </h2>
-            <PulseCard card={latestPulse} featured />
+            <FanQuestCard
+              quest={visibleQuest}
+              selectedOption={
+                visibleQuest ? questState.answered[visibleQuest.id] : undefined
+              }
+              onSelect={handleQuestSelect}
+            />
           </section>
-        ) : null}
 
-        <LocalXpBadge state={questState} />
+          <aside className="space-y-4 lg:sticky lg:top-28">
+            {latestPulse ? (
+              <section className="space-y-3">
+                <h2 className="text-lg font-black text-[#10261c]">
+                  Latest Pulse Card
+                </h2>
+                <PulseCard card={latestPulse} featured />
+              </section>
+            ) : null}
 
-        <FanQuestCard
-          quest={visibleQuest}
-          selectedOption={
-            visibleQuest ? questState.answered[visibleQuest.id] : undefined
-          }
-          onSelect={handleQuestSelect}
-        />
+            <LocalXpBadge state={questState} />
 
-        {matchFinished ? (
-          <Link
-            href={`/story/${replay.fixture.fixtureId}`}
-            className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-[#ff7a45] px-4 text-sm font-black text-[#10261c] transition hover:bg-[#ff986f]"
-          >
-            <BookOpen aria-hidden="true" className="h-4 w-4" />
-            View Match Story
-          </Link>
-        ) : null}
+            {matchFinished ? (
+              <Link
+                href={`/story/${replay.fixture.fixtureId}`}
+                className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-[#ff7a45] px-4 text-sm font-black text-[#10261c] transition hover:bg-[#ff986f]"
+              >
+                <BookOpen aria-hidden="true" className="h-4 w-4" />
+                View Match Story
+              </Link>
+            ) : null}
+          </aside>
+        </div>
 
         <PulseTimeline cards={snapshot.pulseCards} />
       </main>

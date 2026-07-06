@@ -1,5 +1,9 @@
 import type { PulseCard, PulseMeterState } from "@/lib/pulse/types";
-import type { NormalizedFixture, NormalizedScoreUpdate } from "@/lib/txline/types";
+import type {
+  NormalizedFixture,
+  NormalizedOddsUpdate,
+  NormalizedScoreUpdate,
+} from "@/lib/txline/types";
 
 export type PunditMomentTone = "calm" | "pressure" | "swing" | "chaos" | "final";
 
@@ -17,10 +21,27 @@ export type PunditMoment = {
 
 export type HiLoPick = "Higher" | "Lower" | "Same";
 
+export type HiLoStatKey = "corners" | "discipline" | "goals";
+
+export type HiLoStatReading = {
+  key: HiLoStatKey;
+  label: string;
+  sourceLabel: string;
+  statKeys: number[];
+  value: number;
+  unit: "per15";
+  rawCount: number;
+  minute?: number;
+};
+
 export type HiLoChallenge = {
   id: string;
   fixtureId: string;
+  statKey: HiLoStatKey;
   label: string;
+  sourceLabel: string;
+  statKeys: number[];
+  unit: "per15";
   baseline: number;
   current: number;
   question: string;
@@ -51,6 +72,7 @@ export type SweepstakePlayer = {
 export type FanExperienceInput = {
   fixture: NormalizedFixture;
   score?: NormalizedScoreUpdate;
+  odds?: NormalizedOddsUpdate[];
   pulseMeter: PulseMeterState;
   pulseCards: PulseCard[];
 };

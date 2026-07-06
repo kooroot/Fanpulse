@@ -30,6 +30,11 @@ export function Hero({ featuredFixture, liveAvailable }: HeroProps) {
             Feel the match through live momentum, fan quests, and shareable
             football stories.
           </p>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <Badge tone="blue">TxLINE live input</Badge>
+            <Badge tone="light">5s pulse refresh</Badge>
+            <Badge tone="light">Stat Hi-Lo</Badge>
+          </div>
           <div className="mt-7 flex flex-col gap-3 sm:flex-row">
             <Link
               href={primaryHref}

@@ -9,12 +9,12 @@ type ScoreHeaderProps = {
 export function ScoreHeader({ fixture, score }: ScoreHeaderProps) {
   return (
     <header className="sticky top-0 z-30 border-b border-[#dce8d8] bg-[#f7faf5]/95 px-4 py-3 backdrop-blur">
-      <div className="mx-auto flex max-w-md items-center justify-between gap-3">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-3">
         <div className="min-w-0 flex-1">
           <p className="truncate text-sm font-bold text-[#15b56d]">
             {fixture.participant1}
           </p>
-          <p className="mt-1 text-3xl font-black text-[#10261c]">
+          <p className="mt-1 text-3xl font-black text-[#10261c] md:text-4xl">
             {score?.participant1Score ?? "-"}
           </p>
         </div>
@@ -28,7 +28,7 @@ export function ScoreHeader({ fixture, score }: ScoreHeaderProps) {
           <p className="truncate text-sm font-bold text-[#3157d5]">
             {fixture.participant2}
           </p>
-          <p className="mt-1 text-3xl font-black text-[#10261c]">
+          <p className="mt-1 text-3xl font-black text-[#10261c] md:text-4xl">
             {score?.participant2Score ?? "-"}
           </p>
         </div>

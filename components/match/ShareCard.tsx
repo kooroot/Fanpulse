@@ -48,7 +48,7 @@ export function ShareCard({
         </div>
         <Share2 aria-hidden="true" className="h-5 w-5 text-[#ffb48f]" />
       </div>
-      <div className="mt-6 grid grid-cols-3 gap-2">
+      <div className="mt-6 grid gap-2 sm:grid-cols-3">
         <Metric label="Final score" value={finalScore} />
         <Metric label="Momentum" value={momentumWinner} />
         <Metric label="Chaos" value={`${meter.chaos}%`} />
@@ -84,7 +84,7 @@ function Metric({ label, value }: { label: string; value: string }) {
       <p className="text-[11px] font-bold uppercase tracking-normal text-[#b7d8c4]">
         {label}
       </p>
-      <p className="mt-1 text-base font-black">{value}</p>
+      <p className="mt-1 break-words text-base font-black">{value}</p>
     </div>
   );
 }

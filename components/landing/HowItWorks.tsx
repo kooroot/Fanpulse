@@ -15,13 +15,13 @@ const features = [
   },
   {
     title: "Fan Quests",
-    copy: "Play free Hi-Lo match moments.",
+    copy: "Play free TxLINE stat Hi-Lo moments.",
     icon: MessageCircleQuestion,
     tone: "text-[#3157d5]",
   },
   {
     title: "Auto Pundit",
-    copy: "Get short match explanations as moments land.",
+    copy: "Get short match and market mood explanations.",
     icon: Mic2,
     tone: "text-[#7c3aed]",
   },

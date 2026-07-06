@@ -39,9 +39,11 @@ export function PulseMeter({ fixture, meter }: PulseMeterProps) {
         </div>
       </div>
       <div className="mt-4 grid grid-cols-3 gap-2 text-xs font-bold text-[#52685d]">
-        <span>{fixture.participant1} {meter.p1}%</span>
-        <span className="text-center">{fixture.participant2} {meter.p2}%</span>
-        <span className="text-right">Chaos {meter.chaos}%</span>
+        <span className="truncate">{fixture.participant1} {meter.p1}%</span>
+        <span className="truncate text-center">
+          {fixture.participant2} {meter.p2}%
+        </span>
+        <span className="truncate text-right">Chaos {meter.chaos}%</span>
       </div>
       {meter.reasons.length > 0 ? (
         <p className="mt-4 text-sm leading-6 text-[#5d7167]">

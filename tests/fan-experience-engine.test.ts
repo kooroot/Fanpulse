@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  buildHiLoStatReading,
   buildPressureIndex,
   buildPunditMoments,
   buildSweepstakeBoard,
@@ -16,6 +17,7 @@ describe("fan-experience-engine", () => {
   const input = {
     fixture: snapshot.fixture,
     score: snapshot.score,
+    odds: snapshot.odds,
     pulseMeter: snapshot.pulseMeter,
     pulseCards: snapshot.pulseCards,
   };
@@ -25,6 +27,14 @@ describe("fan-experience-engine", () => {
 
     expect(moments.length).toBeGreaterThan(0);
     expect(moments[0].shareLine).toContain("USA vs Belgium");
+  });
+
+  it("explains odds-derived market mood in auto pundit", () => {
+    const moments = buildPunditMoments(input);
+    const marketMood = moments.find((moment) => moment.source === "odds");
+
+    expect(marketMood?.title).toContain("Market mood");
+    expect(marketMood?.body).toContain("odds-derived");
   });
 
   it("builds and resolves a free Hi-Lo stats challenge", () => {
@@ -37,7 +47,17 @@ describe("fan-experience-engine", () => {
 
     expect(resolved.status).toBe("RESOLVED");
     expect(resolved.resolvedOption).toBe("Higher");
+    expect(challenge.sourceLabel).toContain("TxLINE");
+    expect(challenge.question).toContain("Next TxLINE stat update");
     expect(scored.xp).toBe(challenge.xpReward);
+  });
+
+  it("uses match stats rather than a pressure index for Hi-Lo", () => {
+    const reading = buildHiLoStatReading(input);
+
+    expect(["corners", "discipline", "goals"]).toContain(reading.key);
+    expect(reading.sourceLabel).toContain("TxLINE");
+    expect(reading.statKeys.length).toBeGreaterThan(0);
   });
 
   it("uses only local fan points for sweepstakes", () => {
@@ -57,6 +77,7 @@ describe("fan-experience-engine", () => {
       buildPressureIndex({
         fixture: early.fixture,
         score: early.score,
+        odds: early.odds,
         pulseMeter: early.pulseMeter,
         pulseCards: early.pulseCards,
       }),
@@ -64,6 +85,7 @@ describe("fan-experience-engine", () => {
       buildPressureIndex({
         fixture: late.fixture,
         score: late.score,
+        odds: late.odds,
         pulseMeter: late.pulseMeter,
         pulseCards: late.pulseCards,
       }),

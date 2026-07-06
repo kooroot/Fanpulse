@@ -25,11 +25,12 @@ FanPulse is not a betting app, prediction market, settlement protocol, trading t
 
 - Live-first TxLINE judge demo with replay fallback when credentials are absent.
 - Match lobby with real TxLINE fixtures first.
+- Responsive mobile and desktop layouts for lobby, live match rooms, and stories.
 - Pulse Meter for fan-facing momentum, pressure, and chaos.
 - Pulse Cards for kickoff, goals, mood swings, comeback windows, discipline shifts, corner pressure, chaos, and final whistle.
 - Fan Quests with local XP and streak only.
-- Auto Pundit feed with copyable and speakable fan commentary.
-- Hi-Lo Stats game driven by a local pressure index.
+- Auto Pundit feed with copyable and speakable commentary, including odds-derived market mood.
+- Hi-Lo Stats game driven by TxLINE score/stat readings such as goals, cards, and corners.
 - Group Sweepstake board for a small watch party.
 - Match in 7 Pulses story.
 - Share card with final score, biggest pulse, momentum winner, and chaos level.
@@ -39,8 +40,8 @@ FanPulse is not a betting app, prediction market, settlement protocol, trading t
 
 - Fan accessibility and UX: mobile-first match companion with plain-language
   momentum, short commentary, and tap-based games.
-- Real-time responsiveness: live match pages poll FanPulse server APIs every
-  few seconds and refresh Pulse Meter, Auto Pundit, Hi-Lo, and sweepstake state.
+- Real-time responsiveness: live match pages poll FanPulse server APIs every 5
+  seconds and refresh Pulse Meter, Auto Pundit, stat Hi-Lo, and sweepstake state.
 - Originality and value creation: TxLINE scores, odds movement, and match
   events become social watch-party loops rather than a raw feed.
 - Commercial path: a creator, streamer, club, or fan-group watch-party kit with
@@ -54,6 +55,10 @@ Live mode reuses the same TxLINE access pattern used by ProofMarket, but the
 FanPulse UI only renders fan-facing momentum, pulse cards, and stories.
 With credentials configured, FanPulse opens real TxLINE fixtures first. Local
 replay remains available only as a no-credential fallback path.
+Live match pages use TxLINE as an active input: scores, odds, and stat
+snapshots are normalized server-side, refreshed in the match UI, and converted
+into Pulse Cards, market mood commentary, stat Hi-Lo prompts, and shareable
+recaps.
 
 Implemented server-side methods:
 
@@ -92,7 +97,7 @@ bun dev
 Open http://localhost:3000.
 
 1. Click `Open Live Match`.
-2. Review the TxLINE fixture, Pulse Meter, Auto Pundit, Hi-Lo Stats, and Group Sweepstake.
+2. Review the TxLINE fixture, Pulse Meter, odds-derived Auto Pundit, stat Hi-Lo, and Group Sweepstake.
 3. Open `Match Lobby` to see the real fixture list from competition `72`.
 4. If live data is unavailable, open the fallback match and click `Start Match Pulse`.
 5. Answer a Fan Quest.
@@ -174,10 +179,11 @@ bun run txline:check:data
 
 - `0:00` FanPulse intro.
 - `0:15` Open live TxLINE match.
-- `0:30` Show Auto Pundit, Hi-Lo Stats, and Group Sweepstake.
-- `1:00` Show real fixture lobby.
-- `1:30` Pulse Cards and Pulse Meter.
-- `2:00` Fallback Fan Quest path if live events are not active yet.
+- `0:30` Show the live-source badges and 5-second refresh indicator.
+- `1:00` Show Auto Pundit market mood, TxLINE stat Hi-Lo, and Group Sweepstake.
+- `1:30` Show real fixture lobby.
+- `2:00` Pulse Cards and Pulse Meter.
+- `2:20` Fallback Fan Quest path if live events are not active yet.
 - `2:30` Share Card.
 - `3:00` Track fit summary.
 
@@ -212,6 +218,6 @@ Safe JSON preview exists as a disabled developer-only component and is not part
 of the normal product surface.
 
 `lib/experience` contains the LoLDosa-inspired fan layer: Auto Pundit moments,
-Hi-Lo Stats pressure scoring, and local sweepstake scoring. It intentionally
-does not contain order execution, wallet connection, automated wagering, or
-money flows.
+TxLINE stat Hi-Lo scoring, and local sweepstake scoring. It intentionally does
+not contain order execution, wallet connection, automated wagering, or money
+flows.
