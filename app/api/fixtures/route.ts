@@ -12,7 +12,7 @@ export const dynamic = "force-dynamic";
 
 export async function GET() {
   const demoFixture = getDemoFixture();
-  const fixtures = [demoFixture];
+  let fixtures = [demoFixture];
   let liveAvailable = false;
   let liveError: string | undefined;
   const network = getTxLineDataNetworkConfig();
@@ -23,8 +23,8 @@ export async function GET() {
   if (hasTxLineCredentials()) {
     try {
       const liveFixtures = await getLiveFixtures();
-      fixtures.push(...liveFixtures);
       liveAvailable = liveFixtures.length > 0;
+      fixtures = liveAvailable ? [...liveFixtures, demoFixture] : [demoFixture];
     } catch (error) {
       liveAvailable = false;
       liveError = error instanceof Error ? error.message : "live fetch failed";

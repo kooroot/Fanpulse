@@ -157,8 +157,8 @@ function fallbackFixture(
 ): NormalizedFixture {
   return {
     fixtureId,
-    participant1: "Team Alpha",
-    participant2: "Team Beta",
+    participant1: "Home side",
+    participant2: "Away side",
     status: scores.length > 0 || odds.length > 0 ? "Live Mode" : "TxLINE",
     source: "txline",
   };

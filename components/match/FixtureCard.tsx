@@ -14,7 +14,7 @@ export function FixtureCard({ fixture }: FixtureCardProps) {
         <div className="min-w-0">
           <div className="flex flex-wrap gap-2">
             <Badge tone={fixture.source === "replay" ? "green" : "blue"}>
-              {fixture.source === "replay" ? "Replay" : "Live"}
+              {fixture.source === "replay" ? "Fallback" : "Live"}
             </Badge>
             <Badge tone="light">{fixture.status ?? "Match ready"}</Badge>
           </div>
@@ -39,7 +39,7 @@ export function FixtureCard({ fixture }: FixtureCardProps) {
 }
 
 function formatFixtureTime(startTime?: string): string {
-  if (!startTime) return "Demo fixture";
+  if (!startTime) return "Match time pending";
 
   const parsed = Date.parse(startTime);
   if (!Number.isFinite(parsed)) return "Match time pending";

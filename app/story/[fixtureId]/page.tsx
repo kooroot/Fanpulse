@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowLeft, RotateCcw } from "lucide-react";
+import { ArrowLeft, List } from "lucide-react";
 import { BottomNav } from "@/components/common/BottomNav";
 import { EmptyState } from "@/components/common/EmptyState";
 import { MatchStoryChapter } from "@/components/match/MatchStoryChapter";
@@ -75,11 +75,11 @@ export default async function StoryPage({ params }: StoryPageProps) {
             Back to Match
           </Link>
           <Link
-            href={`/match/${DEMO_FIXTURE_ID}`}
+            href="/matches"
             className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-[#10261c] px-4 text-sm font-black text-white transition hover:bg-[#1f3a2d]"
           >
-            <RotateCcw aria-hidden="true" className="h-4 w-4" />
-            Replay Demo
+            <List aria-hidden="true" className="h-4 w-4" />
+            Match Lobby
           </Link>
         </div>
       </main>

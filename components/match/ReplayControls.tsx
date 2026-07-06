@@ -29,7 +29,7 @@ export function ReplayControls({
       <div className="flex items-center justify-between gap-3">
         <div>
           <p className="text-xs font-black uppercase tracking-normal text-[#789085]">
-            Replay Mode
+            Fallback replay
           </p>
           <p className="mt-1 text-lg font-black text-[#10261c]">
             {secondsToClock(state.elapsedMs / 1000)}

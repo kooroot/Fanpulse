@@ -34,7 +34,7 @@ export function normalizeFixture(input: unknown): NormalizedFixture | undefined 
         "Home",
         "homeTeam",
         "HomeTeam",
-      ]) ?? "Team Alpha",
+      ]) ?? "Home side",
     participant2:
       stringFrom(value, [
         "participant2",
@@ -45,7 +45,7 @@ export function normalizeFixture(input: unknown): NormalizedFixture | undefined 
         "Away",
         "awayTeam",
         "AwayTeam",
-      ]) ?? "Team Beta",
+      ]) ?? "Away side",
     participant1IsHome: booleanFrom(value, [
       "participant1IsHome",
       "Participant1IsHome",

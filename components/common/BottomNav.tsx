@@ -1,10 +1,10 @@
 import Link from "next/link";
-import { Home, List, Sparkles } from "lucide-react";
+import { Home, List, Radio } from "lucide-react";
 
 const items = [
   { href: "/", label: "Home", icon: Home },
   { href: "/matches", label: "Matches", icon: List },
-  { href: "/story/demo-alpha-beta", label: "Story", icon: Sparkles },
+  { href: "/matches", label: "Live", icon: Radio },
 ];
 
 export function BottomNav() {

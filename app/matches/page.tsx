@@ -10,28 +10,32 @@ import type { NormalizedFixture } from "@/lib/txline/types";
 export const dynamic = "force-dynamic";
 
 export default async function MatchesPage() {
-  const fixtures: NormalizedFixture[] = [getDemoFixture()];
+  let fixtures: NormalizedFixture[] = [];
   let liveAvailable = false;
   const liveSource = getTxLineDataNetworkConfig().sourceLabel;
 
   if (hasTxLineCredentials()) {
     try {
       const liveFixtures = await getLiveFixtures();
-      fixtures.push(...liveFixtures);
+      fixtures = liveFixtures;
       liveAvailable = liveFixtures.length > 0;
     } catch {
       liveAvailable = false;
     }
   }
 
+  fixtures = liveAvailable ? [...fixtures, getDemoFixture()] : [getDemoFixture()];
+
   return (
     <div className="min-h-screen bg-[#f7faf5] pb-24">
       <main className="mx-auto max-w-md space-y-5 px-4 py-6">
         <div>
           <div className="flex flex-wrap gap-2">
-            <Badge tone="green">Replay Mode</Badge>
+            <Badge tone={liveAvailable ? "blue" : "green"}>
+              {liveAvailable ? "Live data first" : "Replay fallback"}
+            </Badge>
             <Badge tone={liveAvailable ? "blue" : "light"}>
-              {liveAvailable ? "Live fixtures ready" : "Demo first"}
+              {liveAvailable ? "TxLINE fixtures ready" : "Live data unavailable"}
             </Badge>
             <Badge tone="light">{liveSource}</Badge>
           </div>
@@ -39,8 +43,8 @@ export default async function MatchesPage() {
             Match Lobby
           </h1>
           <p className="mt-3 text-sm font-semibold leading-6 text-[#52685d]">
-            Choose a match and start the pulse. The demo works without TxLINE
-            credentials, account creation, wallet, tokens, or payment.
+            Choose a real fixture and start the pulse. If TxLINE data is
+            unavailable, FanPulse keeps a local replay fallback for review.
           </p>
         </div>
         <div className="space-y-3">

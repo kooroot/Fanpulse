@@ -18,20 +18,21 @@ FanPulse is not a betting app, prediction market, settlement protocol, trading t
 
 ## Features
 
-- Replay-first judge demo that works without TxLINE credentials.
-- Match lobby with demo fixture first.
+- Live-first TxLINE judge demo with replay fallback when credentials are absent.
+- Match lobby with real TxLINE fixtures first.
 - Pulse Meter for fan-facing momentum, pressure, and chaos.
 - Pulse Cards for kickoff, goals, mood swings, comeback windows, discipline shifts, corner pressure, chaos, and final whistle.
 - Fan Quests with local XP and streak only.
 - Match in 7 Pulses story.
 - Share card with final score, biggest pulse, momentum winner, and chaos level.
-- TxLINE live mode through server-side API routes, with Replay Mode fallback.
+- TxLINE live mode through server-side API routes, with local replay fallback.
 
 ## Official TxLINE Integration
 
 Live mode reuses the same TxLINE access pattern used by ProofMarket, but the
 FanPulse UI only renders fan-facing momentum, pulse cards, and stories.
-Replay Mode is still the default and complete judge path.
+With credentials configured, FanPulse opens real TxLINE fixtures first. Local
+replay remains available only as a no-credential fallback path.
 
 Implemented server-side methods:
 
@@ -69,14 +70,16 @@ bun dev
 
 Open http://localhost:3000.
 
-1. Click `Open Demo Match`.
-2. Click `Start Match Pulse`.
-3. Answer a Fan Quest.
-4. Watch Pulse Cards and the Pulse Meter update.
-5. Open `Match in 7 Pulses` after the final whistle.
-6. Copy the recap from the Share Card.
+1. Click `Open Live Match`.
+2. Review the TxLINE fixture, Pulse Meter, and any available live Pulse Cards.
+3. Open `Match Lobby` to see the real fixture list from competition `72`.
+4. If live data is unavailable, open the fallback match and click `Start Match Pulse`.
+5. Answer a Fan Quest.
+6. Open `Match in 7 Pulses` after the fallback final whistle.
 
-The demo fixture is `Team Alpha vs Team Beta` and finishes in about 76 seconds at 1x.
+The fallback replay fixture is labelled `USA vs Belgium` and finishes in about
+76 seconds at 1x. It is not the primary product surface when TxLINE live data is
+available.
 
 ## Environment Variables
 
@@ -88,10 +91,11 @@ TXLINE_NETWORK=mainnet
 TXLINE_COMPETITION_ID=72
 TXLINE_JWT=
 TXLINE_API_TOKEN=
-NEXT_PUBLIC_DEFAULT_MODE=replay
+NEXT_PUBLIC_DEFAULT_MODE=live
 ```
 
-If credentials are missing or live mode fails, FanPulse stays fully usable in Replay Mode.
+If credentials are missing or live mode fails, FanPulse stays fully usable
+through the local replay fallback.
 
 ## TxLINE Devnet Activation
 
@@ -147,11 +151,11 @@ bun run txline:check:data
 ## Demo Video Script
 
 - `0:00` FanPulse intro.
-- `0:15` Open demo match.
-- `0:30` Start Match Pulse.
+- `0:15` Open live TxLINE match.
+- `0:30` Show real fixture lobby.
 - `1:00` Pulse Cards and Pulse Meter.
-- `1:30` Fan Quest.
-- `2:00` Match Story.
+- `1:30` Fallback Fan Quest path if live events are not active yet.
+- `2:00` Match Story and recap.
 - `2:30` Share Card.
 - `3:00` Track fit summary.
 
@@ -179,4 +183,7 @@ tests/
 
 ## Implementation Notes
 
-Replay Mode uses local seeded data only. Pulse Cards, Pulse Meter, Fan Quests, and Match Story are derived from normalized match updates. Safe JSON preview exists as a disabled developer-only component and is not part of the normal product surface.
+Live mode uses server-side TxLINE snapshots and never exposes credentials to
+browser code. The local replay fallback uses seeded normalized updates only.
+Safe JSON preview exists as a disabled developer-only component and is not part
+of the normal product surface.

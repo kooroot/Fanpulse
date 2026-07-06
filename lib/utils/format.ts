@@ -10,7 +10,7 @@ export function formatPhase(phaseId?: number, fallback?: string): string {
     return PHASES[phaseId].short;
   }
 
-  return fallback ?? "Replay";
+  return fallback ?? "Pending";
 }
 
 export function formatScore(p1?: number, p2?: number): string {

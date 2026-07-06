@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowLeft, RotateCcw, ScrollText } from "lucide-react";
+import { ArrowLeft, RefreshCw, ScrollText } from "lucide-react";
 import { Badge } from "@/components/common/Badge";
 import { BottomNav } from "@/components/common/BottomNav";
 import { EmptyState } from "@/components/common/EmptyState";
@@ -10,7 +10,6 @@ import { ScoreHeader } from "@/components/match/ScoreHeader";
 import { ShareCard } from "@/components/match/ShareCard";
 import { getBiggestPulse } from "@/lib/pulse/story-builder";
 import type { MatchSnapshot } from "@/lib/pulse/types";
-import { DEMO_FIXTURE_ID } from "@/lib/replay/sample-data";
 
 type LiveMatchShellProps = {
   snapshot: MatchSnapshot;
@@ -38,7 +37,7 @@ export function LiveMatchShell({
           </div>
           <p className="text-sm font-semibold leading-6 text-[#52685d]">
             Real match data is converted into fan-readable pulse, momentum, and
-            recap signals. Replay Mode remains available for the full judge demo.
+            recap signals from the current TxLINE fixture.
           </p>
         </div>
 
@@ -97,11 +96,11 @@ export function LiveMatchShell({
             Match Lobby
           </Link>
           <Link
-            href={`/match/${DEMO_FIXTURE_ID}`}
+            href={`/match/${snapshot.fixture.fixtureId}`}
             className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-[#ff7a45] px-4 text-sm font-black text-white transition hover:bg-[#d95e2f]"
           >
-            <RotateCcw aria-hidden="true" className="h-4 w-4" />
-            Replay Demo
+            <RefreshCw aria-hidden="true" className="h-4 w-4" />
+            Refresh Pulse
           </Link>
         </div>
       </main>

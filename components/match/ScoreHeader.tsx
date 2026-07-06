@@ -15,7 +15,7 @@ export function ScoreHeader({ fixture, score }: ScoreHeaderProps) {
             {fixture.participant1}
           </p>
           <p className="mt-1 text-3xl font-black text-[#10261c]">
-            {score?.participant1Score ?? 0}
+            {score?.participant1Score ?? "-"}
           </p>
         </div>
         <div className="flex shrink-0 flex-col items-center gap-2">
@@ -29,7 +29,7 @@ export function ScoreHeader({ fixture, score }: ScoreHeaderProps) {
             {fixture.participant2}
           </p>
           <p className="mt-1 text-3xl font-black text-[#10261c]">
-            {score?.participant2Score ?? 0}
+            {score?.participant2Score ?? "-"}
           </p>
         </div>
       </div>

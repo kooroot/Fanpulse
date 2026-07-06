@@ -11,7 +11,7 @@ import type {
 type ScoreSeed = NormalizedScoreUpdate & { offsetMs: number };
 type OddsSeed = NormalizedOddsUpdate & { offsetMs: number };
 
-export const DEMO_FIXTURE_ID = "demo-alpha-beta";
+export const DEMO_FIXTURE_ID = "demo-usa-belgium";
 
 export function getDemoFixture(): NormalizedFixture {
   return demoFixture as NormalizedFixture;

@@ -35,15 +35,15 @@ describe("txline live integration", () => {
 
   it("rejects non-numeric live fixture ids before TxLINE snapshot calls", () => {
     expect(isNumericFixtureId("123456")).toBe(true);
-    expect(isNumericFixtureId("demo-alpha-beta")).toBe(false);
+    expect(isNumericFixtureId("demo-usa-belgium")).toBe(false);
     expect(isNumericFixtureId("123/../../secret")).toBe(false);
   });
 
   it("normalizes numeric TxLINE StartTime values to ISO strings", () => {
     const fixture = normalizeFixture({
       FixtureId: 99,
-      Participant1: "Team One",
-      Participant2: "Team Two",
+      Participant1: "USA",
+      Participant2: "Belgium",
       CompetitionId: 72,
       Competition: "World Cup",
       StartTime: 1_785_600_000_000,
@@ -59,8 +59,8 @@ describe("txline live integration", () => {
       Response.json([
         {
           FixtureId: 123,
-          Participant1: "Team One",
-          Participant2: "Team Two",
+          Participant1: "USA",
+          Participant2: "Belgium",
           StartTime: 1_785_600_000_000,
         },
       ]),

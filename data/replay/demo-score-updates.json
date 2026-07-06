@@ -1,7 +1,7 @@
 [
   {
     "offsetMs": 0,
-    "fixtureId": "demo-alpha-beta",
+    "fixtureId": "demo-usa-belgium",
     "ts": 0,
     "seq": 1,
     "phaseId": 1,
@@ -13,7 +13,7 @@
   },
   {
     "offsetMs": 2000,
-    "fixtureId": "demo-alpha-beta",
+    "fixtureId": "demo-usa-belgium",
     "ts": 2,
     "seq": 2,
     "phaseId": 2,
@@ -25,7 +25,7 @@
   },
   {
     "offsetMs": 9000,
-    "fixtureId": "demo-alpha-beta",
+    "fixtureId": "demo-usa-belgium",
     "ts": 9,
     "seq": 3,
     "phaseId": 2,
@@ -37,7 +37,7 @@
   },
   {
     "offsetMs": 17000,
-    "fixtureId": "demo-alpha-beta",
+    "fixtureId": "demo-usa-belgium",
     "ts": 17,
     "seq": 4,
     "phaseId": 2,
@@ -49,7 +49,7 @@
   },
   {
     "offsetMs": 26000,
-    "fixtureId": "demo-alpha-beta",
+    "fixtureId": "demo-usa-belgium",
     "ts": 26,
     "seq": 5,
     "phaseId": 2,
@@ -61,7 +61,7 @@
   },
   {
     "offsetMs": 35000,
-    "fixtureId": "demo-alpha-beta",
+    "fixtureId": "demo-usa-belgium",
     "ts": 35,
     "seq": 6,
     "phaseId": 2,
@@ -73,7 +73,7 @@
   },
   {
     "offsetMs": 45000,
-    "fixtureId": "demo-alpha-beta",
+    "fixtureId": "demo-usa-belgium",
     "ts": 45,
     "seq": 7,
     "phaseId": 4,
@@ -85,7 +85,7 @@
   },
   {
     "offsetMs": 52000,
-    "fixtureId": "demo-alpha-beta",
+    "fixtureId": "demo-usa-belgium",
     "ts": 52,
     "seq": 8,
     "phaseId": 4,
@@ -97,7 +97,7 @@
   },
   {
     "offsetMs": 62000,
-    "fixtureId": "demo-alpha-beta",
+    "fixtureId": "demo-usa-belgium",
     "ts": 62,
     "seq": 9,
     "phaseId": 4,
@@ -109,7 +109,7 @@
   },
   {
     "offsetMs": 76000,
-    "fixtureId": "demo-alpha-beta",
+    "fixtureId": "demo-usa-belgium",
     "ts": 76,
     "seq": 10,
     "phaseId": 5,
