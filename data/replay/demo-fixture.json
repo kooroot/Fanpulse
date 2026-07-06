@@ -1,0 +1,10 @@
+{
+  "fixtureId": "demo-alpha-beta",
+  "participant1": "Team Alpha",
+  "participant2": "Team Beta",
+  "participant1IsHome": true,
+  "startTime": "2026-07-06T13:00:00.000Z",
+  "status": "Replay Mode",
+  "competitionId": "world-cup-football-demo",
+  "source": "replay"
+}

@@ -1,0 +1,122 @@
+[
+  {
+    "offsetMs": 0,
+    "fixtureId": "demo-alpha-beta",
+    "ts": 0,
+    "seq": 1,
+    "phaseId": 1,
+    "minute": 0,
+    "participant1Score": 0,
+    "participant2Score": 0,
+    "stats": { "1": 0, "2": 0, "3": 0, "4": 0, "5": 0, "6": 0, "7": 0, "8": 0 },
+    "source": "replay"
+  },
+  {
+    "offsetMs": 2000,
+    "fixtureId": "demo-alpha-beta",
+    "ts": 2,
+    "seq": 2,
+    "phaseId": 2,
+    "minute": 1,
+    "participant1Score": 0,
+    "participant2Score": 0,
+    "stats": { "1": 0, "2": 0, "3": 0, "4": 0, "5": 0, "6": 0, "7": 0, "8": 0 },
+    "source": "replay"
+  },
+  {
+    "offsetMs": 9000,
+    "fixtureId": "demo-alpha-beta",
+    "ts": 9,
+    "seq": 3,
+    "phaseId": 2,
+    "minute": 12,
+    "participant1Score": 0,
+    "participant2Score": 0,
+    "stats": { "1": 0, "2": 0, "3": 0, "4": 0, "5": 0, "6": 0, "7": 2, "8": 0 },
+    "source": "replay"
+  },
+  {
+    "offsetMs": 17000,
+    "fixtureId": "demo-alpha-beta",
+    "ts": 17,
+    "seq": 4,
+    "phaseId": 2,
+    "minute": 22,
+    "participant1Score": 1,
+    "participant2Score": 0,
+    "stats": { "1": 1, "2": 0, "3": 0, "4": 0, "5": 0, "6": 0, "7": 2, "8": 0 },
+    "source": "replay"
+  },
+  {
+    "offsetMs": 26000,
+    "fixtureId": "demo-alpha-beta",
+    "ts": 26,
+    "seq": 5,
+    "phaseId": 2,
+    "minute": 31,
+    "participant1Score": 1,
+    "participant2Score": 0,
+    "stats": { "1": 1, "2": 0, "3": 0, "4": 1, "5": 0, "6": 0, "7": 2, "8": 0 },
+    "source": "replay"
+  },
+  {
+    "offsetMs": 35000,
+    "fixtureId": "demo-alpha-beta",
+    "ts": 35,
+    "seq": 6,
+    "phaseId": 2,
+    "minute": 39,
+    "participant1Score": 1,
+    "participant2Score": 0,
+    "stats": { "1": 1, "2": 0, "3": 0, "4": 1, "5": 0, "6": 0, "7": 2, "8": 3 },
+    "source": "replay"
+  },
+  {
+    "offsetMs": 45000,
+    "fixtureId": "demo-alpha-beta",
+    "ts": 45,
+    "seq": 7,
+    "phaseId": 4,
+    "minute": 58,
+    "participant1Score": 1,
+    "participant2Score": 1,
+    "stats": { "1": 1, "2": 1, "3": 0, "4": 1, "5": 0, "6": 0, "7": 2, "8": 3 },
+    "source": "replay"
+  },
+  {
+    "offsetMs": 52000,
+    "fixtureId": "demo-alpha-beta",
+    "ts": 52,
+    "seq": 8,
+    "phaseId": 4,
+    "minute": 66,
+    "participant1Score": 1,
+    "participant2Score": 1,
+    "stats": { "1": 1, "2": 1, "3": 1, "4": 1, "5": 0, "6": 0, "7": 3, "8": 4 },
+    "source": "replay"
+  },
+  {
+    "offsetMs": 62000,
+    "fixtureId": "demo-alpha-beta",
+    "ts": 62,
+    "seq": 9,
+    "phaseId": 4,
+    "minute": 78,
+    "participant1Score": 2,
+    "participant2Score": 1,
+    "stats": { "1": 2, "2": 1, "3": 1, "4": 1, "5": 0, "6": 0, "7": 3, "8": 4 },
+    "source": "replay"
+  },
+  {
+    "offsetMs": 76000,
+    "fixtureId": "demo-alpha-beta",
+    "ts": 76,
+    "seq": 10,
+    "phaseId": 5,
+    "minute": 90,
+    "participant1Score": 2,
+    "participant2Score": 1,
+    "stats": { "1": 2, "2": 1, "3": 1, "4": 1, "5": 0, "6": 0, "7": 3, "8": 4 },
+    "source": "replay"
+  }
+]
