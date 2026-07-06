@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { BookOpen } from "lucide-react";
+import { FanExperiencePanel } from "@/components/match/FanExperiencePanel";
 import { FanQuestCard } from "@/components/match/FanQuestCard";
 import { LocalXpBadge } from "@/components/match/LocalXpBadge";
 import { PulseCard } from "@/components/match/PulseCard";
@@ -139,6 +140,14 @@ export function MobileMatchShell({ replay }: MobileMatchShellProps) {
         />
 
         <PulseMeter fixture={replay.fixture} meter={snapshot.pulseMeter} />
+
+        <FanExperiencePanel
+          fixture={replay.fixture}
+          score={snapshot.score}
+          pulseMeter={snapshot.pulseMeter}
+          pulseCards={snapshot.pulseCards}
+          mode="fallback"
+        />
 
         {latestPulse ? (
           <section className="space-y-3">

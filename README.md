@@ -8,6 +8,11 @@ Superteam / TxODDS World Cup Hackathon - Track 3: Consumer and Fan Experiences.
 
 FanPulse is built for casual football fans who want to understand a match quickly, react with friends, play lightweight free match moments, and share a recap.
 
+The latest version benchmarks the successful real-time companion pattern from
+LoLDosa, then adapts it for World Cup football and the TxLINE consumer track:
+automatic event interpretation, watch-party loops, and replayable fan games
+without wagering, wallets, or trading actions.
+
 ## Separate From Other Submissions
 
 - ProofMarket settles prediction markets.
@@ -23,9 +28,25 @@ FanPulse is not a betting app, prediction market, settlement protocol, trading t
 - Pulse Meter for fan-facing momentum, pressure, and chaos.
 - Pulse Cards for kickoff, goals, mood swings, comeback windows, discipline shifts, corner pressure, chaos, and final whistle.
 - Fan Quests with local XP and streak only.
+- Auto Pundit feed with copyable and speakable fan commentary.
+- Hi-Lo Stats game driven by a local pressure index.
+- Group Sweepstake board for a small watch party.
 - Match in 7 Pulses story.
 - Share card with final score, biggest pulse, momentum winner, and chaos level.
 - TxLINE live mode through server-side API routes, with local replay fallback.
+
+## Track Criteria Response
+
+- Fan accessibility and UX: mobile-first match companion with plain-language
+  momentum, short commentary, and tap-based games.
+- Real-time responsiveness: live match pages poll FanPulse server APIs every
+  few seconds and refresh Pulse Meter, Auto Pundit, Hi-Lo, and sweepstake state.
+- Originality and value creation: TxLINE scores, odds movement, and match
+  events become social watch-party loops rather than a raw feed.
+- Commercial path: a creator, streamer, club, or fan-group watch-party kit with
+  branded rooms and share cards.
+- Completeness: landing, live lobby, live match view, replay fallback, story,
+  share card, local XP, and deployment are end to end.
 
 ## Official TxLINE Integration
 
@@ -71,7 +92,7 @@ bun dev
 Open http://localhost:3000.
 
 1. Click `Open Live Match`.
-2. Review the TxLINE fixture, Pulse Meter, and any available live Pulse Cards.
+2. Review the TxLINE fixture, Pulse Meter, Auto Pundit, Hi-Lo Stats, and Group Sweepstake.
 3. Open `Match Lobby` to see the real fixture list from competition `72`.
 4. If live data is unavailable, open the fallback match and click `Start Match Pulse`.
 5. Answer a Fan Quest.
@@ -121,6 +142,7 @@ for World Cup & International Friendlies with a 60-second delay.
 ## Safety And Compliance
 
 - No betting.
+- No automated wagering.
 - No real money.
 - No wallet required.
 - No token rewards.
@@ -152,10 +174,10 @@ bun run txline:check:data
 
 - `0:00` FanPulse intro.
 - `0:15` Open live TxLINE match.
-- `0:30` Show real fixture lobby.
-- `1:00` Pulse Cards and Pulse Meter.
-- `1:30` Fallback Fan Quest path if live events are not active yet.
-- `2:00` Match Story and recap.
+- `0:30` Show Auto Pundit, Hi-Lo Stats, and Group Sweepstake.
+- `1:00` Show real fixture lobby.
+- `1:30` Pulse Cards and Pulse Meter.
+- `2:00` Fallback Fan Quest path if live events are not active yet.
 - `2:30` Share Card.
 - `3:00` Track fit summary.
 
@@ -173,6 +195,7 @@ components/
   match/
   common/
 lib/
+  experience/
   txline/
   pulse/
   replay/
@@ -187,3 +210,8 @@ Live mode uses server-side TxLINE snapshots and never exposes credentials to
 browser code. The local replay fallback uses seeded normalized updates only.
 Safe JSON preview exists as a disabled developer-only component and is not part
 of the normal product surface.
+
+`lib/experience` contains the LoLDosa-inspired fan layer: Auto Pundit moments,
+Hi-Lo Stats pressure scoring, and local sweepstake scoring. It intentionally
+does not contain order execution, wallet connection, automated wagering, or
+money flows.

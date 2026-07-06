@@ -1,4 +1,10 @@
-import { Activity, MessageCircleQuestion, Share2 } from "lucide-react";
+import {
+  Activity,
+  MessageCircleQuestion,
+  Mic2,
+  Share2,
+  Users,
+} from "lucide-react";
 
 const features = [
   {
@@ -9,9 +15,21 @@ const features = [
   },
   {
     title: "Fan Quests",
-    copy: "Play free, lightweight match moments.",
+    copy: "Play free Hi-Lo match moments.",
     icon: MessageCircleQuestion,
     tone: "text-[#3157d5]",
+  },
+  {
+    title: "Auto Pundit",
+    copy: "Get short match explanations as moments land.",
+    icon: Mic2,
+    tone: "text-[#7c3aed]",
+  },
+  {
+    title: "Sweepstake",
+    copy: "Turn fixtures into a watch-party leaderboard.",
+    icon: Users,
+    tone: "text-[#0f9f6e]",
   },
   {
     title: "Match Story",
@@ -24,7 +42,7 @@ const features = [
 export function HowItWorks() {
   return (
     <section className="px-5 py-6 sm:px-8">
-      <div className="mx-auto grid max-w-5xl gap-3 md:grid-cols-3">
+      <div className="mx-auto grid max-w-5xl gap-3 sm:grid-cols-2 lg:grid-cols-5">
         {features.map((feature) => {
           const Icon = feature.icon;
           return (
