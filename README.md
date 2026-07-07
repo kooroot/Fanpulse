@@ -2,6 +2,12 @@
 
 FanPulse is a mobile-first football companion that turns verified match data into live momentum, fan quests, pulse cards, and shareable match stories.
 
+Live demo: https://fanpulse-seven.vercel.app
+
+Public repo: https://github.com/kooroot/Fanpulse
+
+Submission status: live-first mainnet TxLINE demo, replay fallback, responsive desktop/mobile UI, and custom FanPulse app icons are deployed.
+
 ## Track Fit
 
 Superteam / TxODDS World Cup Hackathon - Track 3: Consumer and Fan Experiences.
@@ -26,6 +32,7 @@ FanPulse is not a betting app, prediction market, settlement protocol, trading t
 - Live-first TxLINE judge demo with replay fallback when credentials are absent.
 - Match lobby with real TxLINE fixtures first.
 - Responsive mobile and desktop layouts for lobby, live match rooms, and stories.
+- Custom FanPulse favicon, app icon, and apple-touch icon for the deployed product.
 - Pulse Meter for fan-facing momentum, pressure, and chaos.
 - Pulse Cards for kickoff, goals, mood swings, comeback windows, discipline shifts, corner pressure, chaos, and final whistle.
 - Fan Quests with local XP and streak only.
@@ -35,6 +42,18 @@ FanPulse is not a betting app, prediction market, settlement protocol, trading t
 - Match in 7 Pulses story.
 - Share card with final score, biggest pulse, momentum winner, and chaos level.
 - TxLINE live mode through server-side API routes, with local replay fallback.
+
+## What Judges Should Notice
+
+- FanPulse starts from real TxLINE live fixtures instead of a mock-only demo.
+- The first screen is understandable in seconds: live match, score, pulse meter,
+  fan games, and recap path.
+- TxLINE data is translated into consumer language: momentum, pressure, chaos,
+  market mood, stat Hi-Lo, and stories.
+- The fallback replay exists for review timing, but the product path remains
+  live-first.
+- The experience is social and fan-facing, not a sportsbook, market, wallet, or
+  terminal.
 
 ## Track Criteria Response
 
@@ -96,8 +115,21 @@ bun dev
 
 Open http://localhost:3000.
 
+Production judge path:
+
+1. Open https://fanpulse-seven.vercel.app.
+2. Click `Open Live Match`.
+3. Review the TxLINE fixture, live score, Pulse Meter, odds-derived Auto Pundit,
+   stat Hi-Lo, and Group Sweepstake.
+4. Open `Match Lobby` to see the real fixture list from competition `72`.
+5. Open `Match in 7 Pulses` through the fallback story path if live fixtures are
+   not finished during review.
+
+Local judge path:
+
 1. Click `Open Live Match`.
-2. Review the TxLINE fixture, Pulse Meter, odds-derived Auto Pundit, stat Hi-Lo, and Group Sweepstake.
+2. Review the TxLINE fixture, Pulse Meter, odds-derived Auto Pundit, stat Hi-Lo,
+   and Group Sweepstake.
 3. Open `Match Lobby` to see the real fixture list from competition `72`.
 4. If live data is unavailable, open the fallback match and click `Start Match Pulse`.
 5. Answer a Fan Quest.
@@ -179,12 +211,14 @@ bun run txline:check:data
 
 - `0:00` FanPulse intro.
 - `0:15` Open live TxLINE match.
-- `0:30` Show the live-source badges and 5-second refresh indicator.
-- `1:00` Show Auto Pundit market mood, TxLINE stat Hi-Lo, and Group Sweepstake.
-- `1:30` Show real fixture lobby.
-- `2:00` Pulse Cards and Pulse Meter.
-- `2:20` Fallback Fan Quest path if live events are not active yet.
-- `2:30` Share Card.
+- `0:30` Show live-source badges, mainnet TxLINE, real score, and the 5-second
+  refresh indicator.
+- `0:45` Show Pulse Meter and Pulse Cards.
+- `1:05` Show Auto Pundit market mood or the graceful odds waiting state.
+- `1:25` Show TxLINE stat Hi-Lo and Group Sweepstake.
+- `1:45` Show real fixture lobby.
+- `2:05` Show fallback replay only as review insurance.
+- `2:30` Show Match in 7 Pulses and Share Card.
 - `3:00` Track fit summary.
 
 ## Project Structure
@@ -209,6 +243,18 @@ lib/
 data/replay/
 tests/
 ```
+
+## Branding
+
+FanPulse ships with a custom lightweight icon set:
+
+- `app/favicon.ico`
+- `app/icon.svg`
+- `public/fanpulse-icon.svg`
+- `public/apple-icon.svg`
+
+The icon uses FanPulse colors, pulse bars, and a football-like signal mark
+without official logos, team crests, or tournament marks.
 
 ## Implementation Notes
 
