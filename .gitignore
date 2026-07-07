@@ -38,6 +38,12 @@ yarn-error.log*
 /keys/
 /txline/.secrets/
 
+# local demo video artifacts
+/fanpulse.mov
+/fanpulse_subtitles.srt
+/fanpulse_youtube_subtitled.mp4
+/tmp/
+
 # vercel
 .vercel
 
