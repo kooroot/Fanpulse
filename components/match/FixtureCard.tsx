@@ -2,22 +2,31 @@ import Link from "next/link";
 import { ArrowRight, CalendarDays } from "lucide-react";
 import { Badge } from "@/components/common/Badge";
 import type { NormalizedFixture } from "@/lib/txline/types";
-import { formatTeamName } from "@/lib/utils/format";
+import {
+  formatTeamName,
+  getFixtureDisplayStatus,
+  type FixtureDisplayKind,
+} from "@/lib/utils/format";
 
 type FixtureCardProps = {
   fixture: NormalizedFixture;
 };
 
 export function FixtureCard({ fixture }: FixtureCardProps) {
+  const displayStatus = getFixtureDisplayStatus(fixture);
+
   return (
     <article className="flex h-full flex-col rounded-lg border border-[#dce8d8] bg-white p-4 shadow-sm">
       <div className="flex flex-1 items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="flex flex-wrap gap-2">
-            <Badge tone={fixture.source === "replay" ? "green" : "blue"}>
-              {fixture.source === "replay" ? "Fallback" : "Live"}
+            <Badge tone={fixtureTone(displayStatus.kind)}>
+              {displayStatus.label}
             </Badge>
-            <Badge tone="light">{fixture.status ?? "Match ready"}</Badge>
+            <Badge tone="light">
+              {fixture.source === "txline" ? "TxLINE fixture" : "Fallback"}
+            </Badge>
+            <Badge tone="light">{displayStatus.detail}</Badge>
           </div>
           <h2 className="mt-4 text-xl font-black text-[#10261c]">
             {formatTeamName(fixture.participant1)} vs{" "}
@@ -38,6 +47,13 @@ export function FixtureCard({ fixture }: FixtureCardProps) {
       </Link>
     </article>
   );
+}
+
+function fixtureTone(kind: FixtureDisplayKind) {
+  if (kind === "live" || kind === "live-window") return "blue";
+  if (kind === "upcoming" || kind === "starting-soon") return "orange";
+  if (kind === "replay") return "green";
+  return "light";
 }
 
 function formatFixtureTime(startTime?: string): string {

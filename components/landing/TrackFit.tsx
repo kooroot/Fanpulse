@@ -6,7 +6,7 @@ export function TrackFit() {
       <div className="mx-auto max-w-5xl rounded-lg border border-[#dce8d8] bg-white p-5">
         <div className="flex flex-wrap gap-2">
           <Badge tone="blue">World Cup football</Badge>
-          <Badge tone="orange">TxLINE live</Badge>
+          <Badge tone="orange">TxLINE data</Badge>
           <Badge tone="light">5s refresh</Badge>
           <Badge tone="light">Stat Hi-Lo</Badge>
           <Badge tone="green">No wallet</Badge>

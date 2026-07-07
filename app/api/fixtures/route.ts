@@ -7,12 +7,14 @@ import {
   getDefaultCompetitionId,
   getTxLineDataNetworkConfig,
 } from "@/lib/txline/network";
+import { getFixtureDisplayStatus } from "@/lib/utils/format";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
   const demoFixture = getDemoFixture();
   let fixtures = [demoFixture];
+  let txlineAvailable = false;
   let liveAvailable = false;
   let liveError: string | undefined;
   const network = getTxLineDataNetworkConfig();
@@ -23,9 +25,13 @@ export async function GET() {
   if (hasTxLineCredentials()) {
     try {
       const liveFixtures = await getLiveFixtures();
-      liveAvailable = liveFixtures.length > 0;
-      fixtures = liveAvailable ? [...liveFixtures, demoFixture] : [demoFixture];
+      txlineAvailable = liveFixtures.length > 0;
+      liveAvailable = liveFixtures.some(
+        (fixture) => getFixtureDisplayStatus(fixture).isLive,
+      );
+      fixtures = txlineAvailable ? [...liveFixtures, demoFixture] : [demoFixture];
     } catch (error) {
+      txlineAvailable = false;
       liveAvailable = false;
       liveError = error instanceof Error ? error.message : "live fetch failed";
     }
@@ -35,6 +41,7 @@ export async function GET() {
 
   return NextResponse.json({
     defaultMode: process.env.NEXT_PUBLIC_DEFAULT_MODE ?? "replay",
+    txlineAvailable,
     liveAvailable,
     liveNetwork: network.network,
     liveSource: network.sourceLabel,

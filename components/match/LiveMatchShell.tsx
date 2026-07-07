@@ -14,6 +14,10 @@ import { ScoreHeader } from "@/components/match/ScoreHeader";
 import { ShareCard } from "@/components/match/ShareCard";
 import { getBiggestPulse } from "@/lib/pulse/story-builder";
 import type { MatchSnapshot } from "@/lib/pulse/types";
+import {
+  getFixtureDisplayStatus,
+  type FixtureDisplayKind,
+} from "@/lib/utils/format";
 
 type LiveMatchShellProps = {
   snapshot: MatchSnapshot;
@@ -31,6 +35,10 @@ export function LiveMatchShell({
   const [refreshLabel, setRefreshLabel] = useState("Just now");
   const latestPulse = currentSnapshot.pulseCards.at(-1);
   const biggestPulse = getBiggestPulse(currentSnapshot.pulseCards);
+  const displayStatus = getFixtureDisplayStatus(
+    currentSnapshot.fixture,
+    currentSnapshot.score,
+  );
 
   useEffect(() => {
     let cancelled = false;
@@ -71,15 +79,18 @@ export function LiveMatchShell({
           <section className="space-y-4">
             <div className="space-y-3">
               <div className="flex flex-wrap gap-2">
-                <Badge tone="blue">Live Mode</Badge>
+                <Badge tone={fixtureTone(displayStatus.kind)}>
+                  {displayStatus.label}
+                </Badge>
                 <Badge tone="green">TxLINE</Badge>
                 <Badge tone="light">{liveSource}</Badge>
                 <Badge tone="light">5s refresh</Badge>
                 <Badge tone="light">Updated {refreshLabel}</Badge>
               </div>
               <p className="max-w-2xl text-sm font-semibold leading-6 text-[#52685d]">
-                Real match data is converted into fan-readable pulse, momentum,
-                stat games, and recap signals from the current TxLINE fixture.
+                TxLINE match data is converted into fan-readable pulse,
+                momentum, stat games, and recap signals from the current
+                fixture.
               </p>
             </div>
 
@@ -107,7 +118,7 @@ export function LiveMatchShell({
                 <PulseCard card={latestPulse} featured />
               </section>
             ) : (
-              <EmptyState title="Live pulse waiting">
+              <EmptyState title="Pulse waiting">
                 TxLINE returned the fixture, but there are not enough match
                 events yet to create Pulse Cards.
               </EmptyState>
@@ -169,6 +180,13 @@ export function LiveMatchShell({
       <BottomNav />
     </div>
   );
+}
+
+function fixtureTone(kind: FixtureDisplayKind) {
+  if (kind === "live" || kind === "live-window") return "blue";
+  if (kind === "upcoming" || kind === "starting-soon") return "orange";
+  if (kind === "replay") return "green";
+  return "light";
 }
 
 function formatRefreshTime(date: Date): string {

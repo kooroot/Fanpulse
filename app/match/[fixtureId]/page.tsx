@@ -24,7 +24,7 @@ export default async function MatchPage({ params }: MatchPageProps) {
     return (
       <LiveMatchShell
         snapshot={liveResult.snapshot}
-        liveSource={liveResult.liveSource ?? "TxLINE live feed"}
+        liveSource={liveResult.liveSource ?? "TxLINE match feed"}
         warnings={liveResult.warnings}
       />
     );

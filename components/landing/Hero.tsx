@@ -2,27 +2,34 @@ import Link from "next/link";
 import { ArrowRight, Play, Radio } from "lucide-react";
 import { Badge } from "@/components/common/Badge";
 import type { NormalizedFixture } from "@/lib/txline/types";
-import { formatTeamName } from "@/lib/utils/format";
+import { formatTeamName, getFixtureDisplayStatus } from "@/lib/utils/format";
 
 type HeroProps = {
   featuredFixture: NormalizedFixture;
-  liveAvailable: boolean;
+  txlineAvailable: boolean;
 };
 
-export function Hero({ featuredFixture, liveAvailable }: HeroProps) {
+export function Hero({ featuredFixture, txlineAvailable }: HeroProps) {
+  const displayStatus = getFixtureDisplayStatus(featuredFixture);
   const primaryHref = `/match/${featuredFixture.fixtureId}`;
-  const primaryLabel = liveAvailable ? "Open Live Match" : "Open Match Pulse";
-  const statusLabel = liveAvailable ? "TxLINE Live Fixture" : "Replay Fallback";
-  const fixtureStatus = liveAvailable
-    ? featuredFixture.status ?? "Live data ready"
+  const primaryLabel = txlineAvailable
+    ? displayStatus.isLive
+      ? "Open Live Match"
+      : "Open Fixture Room"
+    : "Open Match Pulse";
+  const statusLabel = txlineAvailable
+    ? `TxLINE ${displayStatus.label} Fixture`
+    : "Replay Fallback";
+  const fixtureStatus = txlineAvailable
+    ? displayStatus.detail
     : "Fallback ready";
 
   return (
     <section className="pulse-grid relative overflow-hidden bg-[#f7faf5] px-5 py-8 sm:px-8">
       <div className="mx-auto grid max-w-5xl gap-8 md:grid-cols-[1fr_0.9fr] md:items-center">
         <div className="min-w-0">
-          <Badge tone={liveAvailable ? "blue" : "green"}>
-            {liveAvailable ? "Real match data ready" : "Data-backed fallback"}
+          <Badge tone={txlineAvailable ? "blue" : "green"}>
+            {txlineAvailable ? "Real match data ready" : "Data-backed fallback"}
           </Badge>
           <h1 className="mt-5 text-5xl font-black tracking-normal text-[#10261c] sm:text-6xl">
             FanPulse
@@ -32,7 +39,7 @@ export function Hero({ featuredFixture, liveAvailable }: HeroProps) {
             football stories.
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
-            <Badge tone="blue">TxLINE live input</Badge>
+            <Badge tone="blue">TxLINE match input</Badge>
             <Badge tone="light">5s pulse refresh</Badge>
             <Badge tone="light">Stat Hi-Lo</Badge>
           </div>

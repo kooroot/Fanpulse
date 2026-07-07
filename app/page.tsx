@@ -5,6 +5,7 @@ import { TrackFit } from "@/components/landing/TrackFit";
 import { getDemoFixture } from "@/lib/replay/sample-data";
 import { hasTxLineCredentials } from "@/lib/txline/client";
 import { getLiveFixtures } from "@/lib/txline/live-snapshot";
+import { getFixtureDisplayStatus } from "@/lib/utils/format";
 
 export const dynamic = "force-dynamic";
 
@@ -12,13 +13,16 @@ export default async function Home() {
   const liveFixtures = hasTxLineCredentials()
     ? await getLiveFixtures().catch(() => [])
     : [];
-  const featuredFixture = liveFixtures[0] ?? getDemoFixture();
+  const featuredFixture =
+    liveFixtures.find((fixture) => getFixtureDisplayStatus(fixture).isLive) ??
+    liveFixtures[0] ??
+    getDemoFixture();
 
   return (
     <div className="min-h-screen bg-[#f7faf5] pb-20">
       <Hero
         featuredFixture={featuredFixture}
-        liveAvailable={liveFixtures.length > 0}
+        txlineAvailable={liveFixtures.length > 0}
       />
       <HowItWorks />
       <TrackFit />

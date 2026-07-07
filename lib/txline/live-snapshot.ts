@@ -159,7 +159,7 @@ function fallbackFixture(
     fixtureId,
     participant1: "Home side",
     participant2: "Away side",
-    status: scores.length > 0 || odds.length > 0 ? "Live Mode" : "TxLINE",
+    status: scores.length > 0 || odds.length > 0 ? "TxLINE data" : "TxLINE",
     source: "txline",
   };
 }

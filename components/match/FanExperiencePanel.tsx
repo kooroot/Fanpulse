@@ -132,7 +132,7 @@ export function FanExperiencePanel(props: FanExperiencePanelProps) {
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <p className="text-xs font-black uppercase tracking-normal text-[#789085]">
-            FanPulse Live Lab
+            FanPulse Match Lab
           </p>
           <h2 className="text-lg font-black text-[#10261c]">
             Auto Pundit & Fan Games
@@ -140,7 +140,7 @@ export function FanExperiencePanel(props: FanExperiencePanelProps) {
         </div>
         <div className="flex flex-wrap gap-2 sm:justify-end">
           <Badge tone={props.mode === "live" ? "blue" : "green"}>
-            {props.mode === "live" ? "TxLINE live" : "Fallback"}
+            {props.mode === "live" ? "TxLINE feed" : "Fallback"}
           </Badge>
           <Badge tone="light">
             {props.mode === "live" ? "5s refresh" : "Replayable"}

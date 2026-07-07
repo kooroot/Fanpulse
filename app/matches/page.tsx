@@ -11,42 +11,44 @@ export const dynamic = "force-dynamic";
 
 export default async function MatchesPage() {
   let fixtures: NormalizedFixture[] = [];
-  let liveAvailable = false;
+  let txlineAvailable = false;
   const liveSource = getTxLineDataNetworkConfig().sourceLabel;
 
   if (hasTxLineCredentials()) {
     try {
       const liveFixtures = await getLiveFixtures();
       fixtures = liveFixtures;
-      liveAvailable = liveFixtures.length > 0;
+      txlineAvailable = liveFixtures.length > 0;
     } catch {
-      liveAvailable = false;
+      txlineAvailable = false;
     }
   }
 
-  fixtures = liveAvailable ? [...fixtures, getDemoFixture()] : [getDemoFixture()];
+  fixtures = txlineAvailable ? [...fixtures, getDemoFixture()] : [getDemoFixture()];
 
   return (
     <div className="min-h-screen bg-[#f7faf5] pb-24">
       <main className="mx-auto max-w-6xl space-y-6 px-4 py-6 lg:px-8">
         <div>
           <div className="flex flex-wrap gap-2">
-            <Badge tone={liveAvailable ? "blue" : "green"}>
-              {liveAvailable ? "Live data first" : "Replay fallback"}
+            <Badge tone={txlineAvailable ? "blue" : "green"}>
+              {txlineAvailable ? "TxLINE fixtures first" : "Replay fallback"}
             </Badge>
-            <Badge tone={liveAvailable ? "blue" : "light"}>
-              {liveAvailable ? "TxLINE fixtures ready" : "Live data unavailable"}
+            <Badge tone={txlineAvailable ? "blue" : "light"}>
+              {txlineAvailable
+                ? "Live and upcoming schedule"
+                : "TxLINE unavailable"}
             </Badge>
             <Badge tone="light">{liveSource}</Badge>
-            <Badge tone="light">5s match refresh</Badge>
+            <Badge tone="light">5s refresh in match rooms</Badge>
           </div>
           <h1 className="mt-4 text-4xl font-black text-[#10261c]">
             Match Lobby
           </h1>
           <p className="mt-3 max-w-2xl text-sm font-semibold leading-6 text-[#52685d]">
-            Choose a real fixture and start the pulse. FanPulse reads TxLINE
-            scores, odds, and stat updates through server routes, with replay
-            fallback only when live data is unavailable.
+            Choose a TxLINE fixture and start the pulse. Upcoming matches stay
+            clearly marked until the match window opens, while active match
+            rooms refresh scores, odds, and stat updates through server routes.
           </p>
         </div>
         <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
