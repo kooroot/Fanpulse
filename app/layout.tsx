@@ -16,6 +16,15 @@ export const metadata: Metadata = {
   title: "FanPulse",
   description:
     "Feel the match through live momentum, fan quests, and shareable football stories.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/fanpulse-icon.svg", type: "image/svg+xml" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: [{ url: "/apple-icon.svg", type: "image/svg+xml" }],
+  },
 };
 
 export default function RootLayout({
