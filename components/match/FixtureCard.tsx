@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight, CalendarDays } from "lucide-react";
 import { Badge } from "@/components/common/Badge";
 import type { NormalizedFixture } from "@/lib/txline/types";
+import { formatTeamName } from "@/lib/utils/format";
 
 type FixtureCardProps = {
   fixture: NormalizedFixture;
@@ -19,7 +20,8 @@ export function FixtureCard({ fixture }: FixtureCardProps) {
             <Badge tone="light">{fixture.status ?? "Match ready"}</Badge>
           </div>
           <h2 className="mt-4 text-xl font-black text-[#10261c]">
-            {fixture.participant1} vs {fixture.participant2}
+            {formatTeamName(fixture.participant1)} vs{" "}
+            {formatTeamName(fixture.participant2)}
           </h2>
           <p className="mt-2 flex items-center gap-2 text-sm font-semibold text-[#5d7167]">
             <CalendarDays aria-hidden="true" className="h-4 w-4" />

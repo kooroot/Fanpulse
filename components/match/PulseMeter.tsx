@@ -1,5 +1,6 @@
 import type { NormalizedFixture } from "@/lib/txline/types";
 import type { PulseMeterState } from "@/lib/pulse/types";
+import { formatTeamName } from "@/lib/utils/format";
 
 type PulseMeterProps = {
   fixture: NormalizedFixture;
@@ -39,9 +40,9 @@ export function PulseMeter({ fixture, meter }: PulseMeterProps) {
         </div>
       </div>
       <div className="mt-4 grid grid-cols-3 gap-2 text-xs font-bold text-[#52685d]">
-        <span className="truncate">{fixture.participant1} {meter.p1}%</span>
+        <span className="truncate">{formatTeamName(fixture.participant1)} {meter.p1}%</span>
         <span className="truncate text-center">
-          {fixture.participant2} {meter.p2}%
+          {formatTeamName(fixture.participant2)} {meter.p2}%
         </span>
         <span className="truncate text-right">Chaos {meter.chaos}%</span>
       </div>

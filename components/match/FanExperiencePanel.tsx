@@ -18,6 +18,7 @@ import type {
   HiLoLocalState,
   HiLoPick,
 } from "@/lib/experience/types";
+import { formatTeamName } from "@/lib/utils/format";
 
 const STORAGE_KEY = "fanpulse.hilo";
 const EMPTY_STATE: HiLoLocalState = {
@@ -285,7 +286,7 @@ export function FanExperiencePanel(props: FanExperiencePanelProps) {
               >
                 <div className="min-w-0">
                   <p className="truncate text-sm font-black text-[#10261c]">
-                    {row.name} - {row.team}
+                    {row.name} - {formatTeamName(row.team)}
                   </p>
                   <p className="text-xs font-bold text-[#789085]">
                     {row.note}

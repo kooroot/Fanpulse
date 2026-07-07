@@ -1,5 +1,6 @@
 import type { NormalizedFixture, NormalizedScoreUpdate } from "@/lib/txline/types";
 import { PhaseBadge } from "@/components/match/PhaseBadge";
+import { formatTeamName } from "@/lib/utils/format";
 
 type ScoreHeaderProps = {
   fixture: NormalizedFixture;
@@ -12,7 +13,7 @@ export function ScoreHeader({ fixture, score }: ScoreHeaderProps) {
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-3">
         <div className="min-w-0 flex-1">
           <p className="truncate text-sm font-bold text-[#15b56d]">
-            {fixture.participant1}
+            {formatTeamName(fixture.participant1)}
           </p>
           <p className="mt-1 text-3xl font-black text-[#10261c] md:text-4xl">
             {score?.participant1Score ?? "-"}
@@ -26,7 +27,7 @@ export function ScoreHeader({ fixture, score }: ScoreHeaderProps) {
         </div>
         <div className="min-w-0 flex-1 text-right">
           <p className="truncate text-sm font-bold text-[#3157d5]">
-            {fixture.participant2}
+            {formatTeamName(fixture.participant2)}
           </p>
           <p className="mt-1 text-3xl font-black text-[#10261c] md:text-4xl">
             {score?.participant2Score ?? "-"}

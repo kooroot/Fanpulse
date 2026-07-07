@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Check, Copy, Share2 } from "lucide-react";
 import type { MatchStory, PulseMeterState } from "@/lib/pulse/types";
 import type { NormalizedFixture, NormalizedScoreUpdate } from "@/lib/txline/types";
+import { formatTeamName } from "@/lib/utils/format";
 
 type ShareCardProps = {
   fixture: NormalizedFixture;
@@ -24,9 +25,9 @@ export function ShareCard({
   const finalScore = `${score?.participant1Score ?? 0}-${score?.participant2Score ?? 0}`;
   const momentumWinner =
     meter.leader === "P1"
-      ? fixture.participant1
+      ? formatTeamName(fixture.participant1)
       : meter.leader === "P2"
-        ? fixture.participant2
+        ? formatTeamName(fixture.participant2)
         : "Balanced";
 
   async function copyRecap() {
@@ -43,7 +44,8 @@ export function ShareCard({
             Unofficial fan recap
           </p>
           <h2 className="mt-2 text-2xl font-black">
-            {fixture.participant1} vs {fixture.participant2}
+            {formatTeamName(fixture.participant1)} vs{" "}
+            {formatTeamName(fixture.participant2)}
           </h2>
         </div>
         <Share2 aria-hidden="true" className="h-5 w-5 text-[#ffb48f]" />

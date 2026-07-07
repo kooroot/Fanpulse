@@ -4,6 +4,7 @@ import { DEMO_FIXTURE_ID, getDemoReplayMatch } from "@/lib/replay/sample-data";
 import { getReplaySnapshot } from "@/lib/replay/replay-engine";
 import { hasTxLineCredentials } from "@/lib/txline/client";
 import { buildLiveMatchSnapshot } from "@/lib/txline/live-snapshot";
+import { formatTeamName } from "@/lib/utils/format";
 
 type RouteContext = {
   params: Promise<{ fixtureId: string }>;
@@ -29,14 +30,14 @@ export async function GET(_request: Request, context: RouteContext) {
   const biggestPulse = getBiggestPulse(snapshot.pulseCards);
 
   return NextResponse.json({
-    title: `${snapshot.fixture.participant1} vs ${snapshot.fixture.participant2}`,
+    title: `${formatTeamName(snapshot.fixture.participant1)} vs ${formatTeamName(snapshot.fixture.participant2)}`,
     finalScore: `${snapshot.score?.participant1Score ?? 0}-${snapshot.score?.participant2Score ?? 0}`,
     biggestPulse: biggestPulse?.title ?? "Final push",
     momentumWinner:
       snapshot.pulseMeter.leader === "P1"
-        ? snapshot.fixture.participant1
+        ? formatTeamName(snapshot.fixture.participant1)
         : snapshot.pulseMeter.leader === "P2"
-          ? snapshot.fixture.participant2
+          ? formatTeamName(snapshot.fixture.participant2)
           : "Balanced",
     chaosLevel: snapshot.pulseMeter.chaos,
     label: "Unofficial fan recap",

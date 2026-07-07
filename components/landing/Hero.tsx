@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight, Play, Radio } from "lucide-react";
 import { Badge } from "@/components/common/Badge";
 import type { NormalizedFixture } from "@/lib/txline/types";
+import { formatTeamName } from "@/lib/utils/format";
 
 type HeroProps = {
   featuredFixture: NormalizedFixture;
@@ -65,7 +66,7 @@ export function Hero({ featuredFixture, liveAvailable }: HeroProps) {
                   Fixture side
                 </p>
                 <p className="mt-1 truncate text-2xl font-black">
-                  {featuredFixture.participant1}
+                  {formatTeamName(featuredFixture.participant1)}
                 </p>
               </div>
               <div className="rounded-full bg-white/12 px-3 py-1 text-sm font-bold">
@@ -76,7 +77,7 @@ export function Hero({ featuredFixture, liveAvailable }: HeroProps) {
                   Fixture side
                 </p>
                 <p className="mt-1 truncate text-2xl font-black">
-                  {featuredFixture.participant2}
+                  {formatTeamName(featuredFixture.participant2)}
                 </p>
               </div>
             </div>
