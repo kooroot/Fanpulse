@@ -6,6 +6,8 @@ Live demo: https://fanpulse-seven.vercel.app
 
 Public repo: https://github.com/kooroot/Fanpulse
 
+Technical documentation: [docs/TECHNICAL_DOCUMENTATION.md](docs/TECHNICAL_DOCUMENTATION.md)
+
 Submission status: live-first mainnet TxLINE demo, replay fallback, responsive desktop/mobile UI, and custom FanPulse app icons are deployed.
 
 ## Track Fit

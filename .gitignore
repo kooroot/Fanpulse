@@ -42,6 +42,7 @@ yarn-error.log*
 /fanpulse.mov
 /fanpulse_subtitles.srt
 /fanpulse_youtube_subtitled.mp4
+/fanpulse_youtube_subtitled_audio.mp4
 /tmp/
 
 # vercel
