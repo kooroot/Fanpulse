@@ -6,4 +6,10 @@ txline/.secrets/
 .next/
 node_modules/
 coverage/
+tmp/
+fanpulse.mov
+fanpulse_subtitles.srt
+fanpulse_youtube_subtitled.mp4
+fanpulse_youtube_subtitled_audio.mp4
+.DS_Store
 *.pem
