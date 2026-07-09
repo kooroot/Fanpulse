@@ -174,9 +174,15 @@ bun run txline:bootstrap:devnet
 bun run txline:check:data
 ```
 
-`txline:bootstrap:devnet` writes `TXLINE_JWT` and `TXLINE_API_TOKEN` into
-`.env.local` without printing them. The default free service level is `1`
-for World Cup & International Friendlies with a 60-second delay.
+`txline:bootstrap:devnet` writes `TXLINE_FALLBACK_JWT` and
+`TXLINE_FALLBACK_API_TOKEN` into `.env.local` without printing them.
+
+TxLINE clarification, July 9, 2026: the obsolete IDL/PricingMatrix metadata
+incorrectly pointed to a `60s` odds-stream sampling period. Odds stream
+sampling is `0s`. FanPulse therefore treats service-level delay labels and
+odds stream sampling as separate concepts. Mainnet endpoints remain:
+`https://txline.txodds.com/api/*`; devnet endpoints remain:
+`https://txline-dev.txodds.com/api/*`.
 
 ## Safety And Compliance
 

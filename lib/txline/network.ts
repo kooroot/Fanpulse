@@ -13,7 +13,8 @@ export type TxLineNetworkConfig = {
   freeServiceLevels: readonly {
     id: number;
     label: string;
-    latency: "60-second delay" | "real-time";
+    tierLabel: "documented delayed tier" | "real-time tier";
+    oddsStreamSamplingSec: 0;
   }[];
 };
 
@@ -32,7 +33,8 @@ const NETWORKS: Record<TxLineNetwork, TxLineNetworkConfig> = {
       {
         id: 1,
         label: "World Cup & Int Friendlies",
-        latency: "60-second delay",
+        tierLabel: "real-time tier",
+        oddsStreamSamplingSec: 0,
       },
     ],
   },
@@ -49,12 +51,14 @@ const NETWORKS: Record<TxLineNetwork, TxLineNetworkConfig> = {
       {
         id: 1,
         label: "World Cup & Int Friendlies",
-        latency: "60-second delay",
+        tierLabel: "documented delayed tier",
+        oddsStreamSamplingSec: 0,
       },
       {
         id: 12,
         label: "World Cup & Int Friendlies",
-        latency: "real-time",
+        tierLabel: "real-time tier",
+        oddsStreamSamplingSec: 0,
       },
     ],
   },

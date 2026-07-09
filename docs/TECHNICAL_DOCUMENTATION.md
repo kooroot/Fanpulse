@@ -220,6 +220,56 @@ It includes:
 - Default fixture competition id.
 - Free service-level metadata.
 
+TxLINE clarification, July 9, 2026: TxODDS announced that obsolete IDL metadata
+incorrectly pointed to a `60s` delay / sampling period for odds streams. The
+actual odds stream sampling period is `0s`. FanPulse therefore does not infer
+odds-stream freshness from the obsolete IDL/PricingMatrix `samplingIntervalSec`
+field.
+
+Service-level labels and odds-stream sampling are tracked separately:
+
+| Network | Service level | Bundle | Free-tier label | Odds stream sampling |
+| --- | --- | --- | --- | --- |
+| mainnet | `1` | World Cup & Int Friendlies | documented delayed tier | `0s` |
+| mainnet | `12` | World Cup & Int Friendlies | real-time tier | `0s` |
+| devnet | `1` | World Cup & Int Friendlies | real-time/dev tier | `0s` |
+
+The local `.env.local` used during development has mainnet service level `1`
+as the primary credential set and devnet service level `1` as the fallback
+credential set.
+
+Mainnet endpoint examples used by FanPulse:
+
+```ts
+const apiOrigin = "https://txline.txodds.com";
+const apiBaseUrl = `${apiOrigin}/api`;
+
+await fetch(`${apiBaseUrl}/fixtures/snapshot?startEpochDay=${epochDay}&competitionId=72`, {
+  headers: {
+    Authorization: `Bearer ${jwt}`,
+    "X-Api-Token": apiToken,
+  },
+});
+
+await fetch(`${apiBaseUrl}/odds/stream`, {
+  headers: {
+    Authorization: `Bearer ${jwt}`,
+    "X-Api-Token": apiToken,
+    Accept: "text/event-stream",
+    "Cache-Control": "no-cache",
+  },
+});
+
+await fetch(`${apiBaseUrl}/scores/stream`, {
+  headers: {
+    Authorization: `Bearer ${jwt}`,
+    "X-Api-Token": apiToken,
+    Accept: "text/event-stream",
+    "Cache-Control": "no-cache",
+  },
+});
+```
+
 ### 5.4 Fixture id guard
 
 Live match snapshot endpoints reject non-numeric TxLINE fixture ids before
@@ -962,4 +1012,3 @@ Potential next steps after the hackathon:
 | Live deployment | https://fanpulse-seven.vercel.app |
 | Demo video | `fanpulse_youtube_subtitled.mp4` local upload artifact |
 | Tests | Vitest suite with 35 passing tests |
-
